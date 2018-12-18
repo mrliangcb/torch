@@ -38,7 +38,7 @@ class custom_dataset(Dataset):
 		self.img_list = [i.split(',')[0] for i in lines] # 遍历每一行，取出每行的第0特征
 		self.label_list = [i.split(',')[3] for i in lines] # 遍历每一行，取出每行的第3特征
 	#上面执行完就进入下面
-	def __getitem__(self, idx): # 提供用法 实例名[下标]
+	def __getitem__(self, idx): # 继承了Dataset之后，重写这个用法，提供用法 实例名[下标]
 		
 		img = self.img_list[idx]
 		label = self.label_list[idx]
