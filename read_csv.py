@@ -49,7 +49,7 @@ class custom_dataset(Dataset):
 		return img, label
 	#上面return之后就不运行下面了
 	def __len__(self): # 提供用法 len(实例名)
-		print('进入2')
+		
 		return len(self.label_list)
 
 txt_dataset = custom_dataset(txt_path)
