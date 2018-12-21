@@ -11,12 +11,12 @@ from torch.autograd import Variable
 #use gpu_flag to set gpu
 
 select_cuda=0
-server=False
-gpu=False
+
+gpu=True
 #True
 
 #get_Data
-if server:
+if gpu:
 	path=r'./MNIST_data'
 else:
 	path = r'./MNIST_data'
@@ -36,7 +36,7 @@ trainloader,testloader,minibatchsize,train_long=my_get_data.mnist_dataLoader(pat
 
 #build model
 #net = my_model.googlenet(1, 10, False)#false表示不显示featuremap
-net=my_model.CNN()
+net=my_model.CNN2()
 if gpu:
 	net=net.cuda(select_cuda)
 print(net)
@@ -68,13 +68,13 @@ for epoch in range(num_epochs):
 		runed=round(nb_used_sample/(train_long*num_epochs),3)
 		print('now_batch:{} / |共epoch:{} | {:.3%}'.format(i,num_epochs,runed),end="\r")#显示进度
 		inputs, labels = data
-		inputs=Variable(inputs)
-		labels=Variable(labels)
+		#inputs=Variable(inputs)
+		#labels=Variable(labels)
 		train_labels=labels.data.numpy()
 		if gpu:inputs, labels=inputs.cuda(select_cuda), labels.cuda(select_cuda)
 		
 		optimizer.zero_grad()
-		outputs = net(inputs)#softmax
+		outputs = net(inputs)#logit
 		loss = criterion(outputs, labels)#输入的是logit，和groundtrue
 
 		loss.backward()
@@ -82,7 +82,7 @@ for epoch in range(num_epochs):
 		nb_used_sample += minibatchsize#第几张图
 		running_loss += loss.item()#累计loss
 		
-		show_result=500
+		show_result=50
 		if nb_used_sample % (show_result * minibatchsize) == 0:  # print every 1000 mini-batches
 			train_err = (running_loss / (show_result * minibatchsize))#每个样本的loss
 			print('Epoch %d batch %5d ' % (epoch + 1, i + 1))
@@ -104,28 +104,29 @@ for epoch in range(num_epochs):
 			net.eval()
 			with torch.no_grad():
 				for data in testloader:
-					images,labels= data
-					inputs=Variable(inputs)
-					labels=Variable(labels)
-					vali_y=labels.data.numpy()
+					x,y= data
+					#x=Variable(x)
+					#y=Variable(y)
+					vali_y=y.data.numpy()
 					flag+=1
-					if gpu:
-						images, labels=inputs.cuda(select_cuda), labels.cuda(select_cuda)
-					outputs = net(images)
+					
+					if gpu:x, y=x.cuda(select_cuda), y.cuda(select_cuda)
+					outputs = net(x)
 					loss = criterion(outputs, labels)
 					totalValLoss += loss.item()
 					if gpu:
 						pre = torch.max(outputs,1)[1].cpu().data.numpy()#torch.max(outputs,1):([0.97,0.1,0.45],[101,1,98])
 					else:
-						
 						pre = torch.max(outputs,1)[1].data.numpy()
 					
 					vali_accuracy=np.sum(pre==vali_y)/len(vali_y)
-					
+					print(np.sum(pre==vali_y))
 					if flag>=10:
 						break
+				print('test_long:',len(vali_y))
 				print('how_many right:{}/{}'.format(np.sum(pre==vali_y),len(vali_y)))
 				print('{}_test_acc:{:.4%}'.format(flag,vali_accuracy))
+				print('#####################################')
 						# cal_acc+=vali_accuracy
 						# vali_num+=len(vali_y)
 				# val_err = (totalValLoss / vali_num)
