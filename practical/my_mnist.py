@@ -8,11 +8,14 @@ import numpy as np
 import copy
 import pandas as pd
 from torch.autograd import Variable
+from sklearn.model_selection import validation_curve
+# from sklearn.cross_validation import cross_val_score
+
 #use gpu_flag to set gpu
 
 select_cuda=0
 
-gpu=True
+gpu=False
 #True
 
 #get_Data
@@ -59,6 +62,8 @@ global_train_loss=[]
 global_train_acc=[]
 global_vali_loss=[]
 global_vali_acc=[]
+
+
 
 for epoch in range(num_epochs):
 
