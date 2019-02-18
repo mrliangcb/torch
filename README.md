@@ -18,11 +18,11 @@
 自动优化只能更新W=nn.Parameter()类型的参数，不能更新variable类型的。  
 因为定义了nn.Parameter,就会绑定到nn.model类中，然后optimizer就会找到这个nn.Parameter进行更新  
 
--优化步骤  
--定义优化器（包含哪些要求导更新的变量）和loss函数  
--初始化优化器optimizer.zero_grad()  
--网络输出，计算loss，loss.backward（） 求导    
--optimizer.step()根据求导来更新  
+- 优化步骤  
+- 定义优化器（包含哪些要求导更新的变量）和loss函数  
+- 初始化优化器optimizer.zero_grad()  
+- 网络输出，计算loss，loss.backward（） 求导    
+- optimizer.step()根据求导来更新  
 
 ## 4.[把module写入类](./神经网络(结构包在类里).py)  
 上面的例子模型写在函数，现在写入一个类,类用的比较广泛  
