@@ -41,7 +41,7 @@ trainloader,testloader,minibatchsize,train_long=my_get_data.mnist_dataLoader(pat
 #net = my_model.googlenet(1, 10, False)#false表示不显示featuremap
 net=my_model.CNN2()
 if gpu:
-	net=net.cuda(select_cuda)
+	net=net.cuda(select_cuda)   #net内定义的variable都会放上cuda
 print(net)
 
 #交叉熵代价函数
@@ -80,6 +80,7 @@ for epoch in range(num_epochs):
 		
 		optimizer.zero_grad()
 		outputs = net(inputs)#logit
+		print("标签",labels.data.numpy())
 		loss = criterion(outputs, labels)#输入的是logit，和groundtrue
 
 		loss.backward()
