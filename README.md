@@ -33,7 +33,7 @@
 ## 6.[CNN做Mnist](./practical)  
 平时做的模型收藏在这里[my_model](./practical/my_model.py)  
 
-6.[y=wx 与CNN串联  ](./practical/cnn+WX.py)  
+## 7.[y=wx 与CNN串联  ](./practical/cnn+WX.py)  
 之前的联系都是直接调用CNN的接口，没有自定义权重  
 或者只对简单模型Y=kx+b（神经网络或线性模型）(数据X是一个数的，就是线性模型，如果是二维的，则是神经网络)  
 现在对两者进行结合，重点是能对自定义的权重进行求导，更新  
