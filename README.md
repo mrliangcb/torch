@@ -4,6 +4,7 @@
 讲了numpy 和 tensor  variable的关系    
 求导问题：variable和 nn.parameter的区别 variable适合手动更新var.data=……     nn.parameter适合用optimizer更新  
 叶子变量leaf variable的问题    
+统计variable.sum()  .mean()
 
 
 ### 2.[建立一个简单的线性模型](./线性回归模型.py)  
@@ -37,24 +38,23 @@
 之前的联系都是直接调用CNN的接口，没有自定义权重  
 或者只对简单模型Y=kx+b（神经网络或线性模型）(数据X是一个数的，就是线性模型，如果是二维的，则是神经网络)  
 现在对两者进行结合，重点是能对自定义的权重进行求导，更新  
-问题:  
-- 1.11x+2=y1  x*2=y2   用一个矩阵表示z=[y1,y2]11  
-  那么要先新建一个z，然后y1和y2赋值给z,那到底是只是给了value还是，给了一个节点属性给z呢  
-- 2.要怎么定义呢，requre_grad可以为false，loss.backward()可以求x,y的导数  
-- 3.怎么才能避免inplace操作呢，因为0.4版本之后的torch都不支持全部inplace  
-- 4.如果用0.4以上版本，很容易报错有``Inplace``，可以多处使用
+问题:  可以参考[inplace和free buffer报错如何解决](./test_leaf.py)
+- 1.11x+2=y1  x*2=y2   用一个矩阵表示z=[y1,y2]   (这个矩阵就相当于中间变量)
+  那么要先新建一个function函数,function里面建立z tensor，然后再z[0,0]=   
+- 2.注意等号的两边不能有同样的角色，如tensor1=tensor1，但可以tensor1=tensor1.clone(),通常可以新建0tensor矩阵来接受值，这样是可以求导的
+- 3. ``0.4`` 版本之后的torch都不支持全部inplace  
+- 4.如何调试求导哪里出错了呢？用以下方法：
 ```
 print('求导')   
-variable.backward()  
+variable1=variable.mean()   #对于矩阵型的variable，则要联成一个数才能求导
+variable1.backward()  
 print('求导成功')   
-```
-   哪里出错就是哪里有inplace  
-
+```  
 
 ### 8.调试工具
-  .requires_grad
-  .is_leaf
+  variable.requires_grad
+  variable.is_leaf
   
-
+### 9.
 
 
