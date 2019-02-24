@@ -42,7 +42,11 @@
   那么要先新建一个z，然后y1和y2赋值给z,那到底是只是给了value还是，给了一个节点属性给z呢  
 - 2.要怎么定义呢，requre_grad可以为false，loss.backward()可以求x,y的导数  
 - 3.怎么才能避免inplace操作呢，因为0.4版本之后的torch都不支持全部inplace  
-- 4.如果用0.4以上版本，很容易报错有``Inplace``，可以多处使用``variable.backward()``，但哪里出错就是哪里有inplace  
+- 4.如果用0.4以上版本，很容易报错有``Inplace``，可以多处使用
+```print('求导') 
+   variable.backward()
+   print('求导成功')``
+   哪里出错就是哪里有inplace  
 
 
 ### 8.调试工具
