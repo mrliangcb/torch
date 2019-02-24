@@ -45,7 +45,7 @@
 - 4.如果用0.4以上版本，很容易报错有``Inplace``，可以多处使用
 ```print('求导') 
    variable.backward()
-   print('求导成功')``
+   print('求导成功') ```
    哪里出错就是哪里有inplace  
 
 
