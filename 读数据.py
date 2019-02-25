@@ -110,6 +110,6 @@ for img,label in train_data1 :
 #https://www.cnblogs.com/qinduanyinghua/p/9311410.html
 
 
-
-
+# https://www.cnblogs.com/kk17/p/10105862.html
+#读自定义的数据，把jpg换成自己的类
 

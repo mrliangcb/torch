@@ -4,8 +4,9 @@
 讲了numpy 和 tensor  variable的关系    
 求导问题：variable和 nn.parameter的区别 variable适合手动更新var.data=……     nn.parameter适合用optimizer更新  
 叶子变量leaf variable的问题    
-统计variable.sum()  .mean()
-
+统计variable.sum()  .mean()  
+维度操作:Gm=Gm.view([1,1,30,30])#可以把[30,30]的矩阵扩展维度   
+torch.cat((Gm,Gv),1)#在哪个维度上连接起来,torch中一般是[bath数,深度，高度，宽度]
 
 ### 2.[建立一个简单的线性模型](./线性回归模型.py)  
 文中建立了variable 的权重  
@@ -42,19 +43,31 @@
 - 1.11x+2=y1  x*2=y2   用一个矩阵表示z=[y1,y2]   (这个矩阵就相当于中间变量)
   那么要先新建一个function函数,function里面建立z tensor，然后再z[0,0]=   
 - 2.注意等号的两边不能有同样的角色，如tensor1=tensor1，但可以tensor1=tensor1.clone(),通常可以新建0tensor矩阵来接受值，这样是可以求导的
+- (感觉应该可以，+=就是在原来的基础上加，但a=a+1，左边的a可能是新的a，右边的是旧的，经过上面问题的实验，是可以的)
+- 
 - 3. ``0.4`` 版本之后的torch都不支持全部inplace  
 - 4.如何调试求导哪里出错了呢？用以下方法：
 ```
 print('求导')   
 variable1=variable.mean()   #对于矩阵型的variable，则要联成一个数才能求导
-variable1.backward()  
+variable1.backward(retain_graph=True)  
 print('求导成功')   
 ```  
+- 5.a=torch.div(a,2)是会发生inplace错误，需要b=a.clone()一下，然后b=torch.div(a,2)  
+  (a数组或者单变量的tensor)a+=a,a=a+2都没有错  
+
 
 ### 8.调试工具
   variable.requires_grad
   variable.is_leaf
   
-### 9.
+### 9.autograd.backward()里面参数的用法  
+参考``https://blog.csdn.net/qq_17550379/article/details/78939046``
+特别是.backward()求导完之后，就会立即释放，不能再次求导了。因此如果想在程序多处求导（调试程序），则要用retain_graph=True
 
+### 10.小细节经验:
+- (1)做concat，想避免inplace操作，可以在i=0时候新建一个变量,i>0的时候就concat到第0个的结果
+for i in range(len())
+
+- (2)累加可以 新建一个长为t的数组，将t次结果记录下来，然后求.sum()
 
