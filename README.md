@@ -71,3 +71,20 @@ for i in range(len())
 
 - (2)累加可以 新建一个长为t的数组，将t次结果记录下来，然后求.sum()
 
+### 11.cuda变量输入到函数中
+```
+def pl(a,b):
+	c=torch.Tensor(1).cuda(0)
+	for i in range(10000):
+		c=c+a+b #如果只是c=a+b是没问题的，但c=c+a+b的话，则要把c放到cuda先，这里感觉左边的c是新建的c，cuda变量之间才能运算
+	print('结果c:',c)
+a=Variable(torch.Tensor(1)).cuda(0)
+b=Variable(torch.Tensor(1)).cuda(0)
+pl(a,b)
+```
+### 12.如何把变量放到gpu上？  对tensor或者variable 的末尾加上.cuda(0)
+如何看这个变量是否cuda上的，print一下它，如果最后出现device=cuda就是了
+
+### 13.loss = criterion(outputs, label_variable)  注意输入标签是variable形，output应该还是variable.cuda型，
+这里要注意，label，如果output在cpu上，label_var也要在cpu，或者共同都在cuda上
+

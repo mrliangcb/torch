@@ -9,7 +9,7 @@ import torch
 
 print("第二次修改")
 pra=0#=0表示用小矩阵在测试  =1表示对116*172
-home=1
+home=0
 
 
 if home==0:
