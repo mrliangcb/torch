@@ -100,8 +100,13 @@ loss = criterion(outputs, Variable(torch.tensor(label)))
 
 ### 15.求准确率的问题
 > 可以参考[预测最大类别](./预测最大类别.py)  
+ 
+### 16.variable放上cuda，报错不能求导的问题 non-leaf variable  
+'x = Variable(torch.FloatTensor(some_np_array).cuda(), requires_grad=True)'    
+以前的写法是先建立一个variable再给.cuda()，但这样相当于a=a.cuda，左边的a是开辟新的a了，    
+而不是我们原本建立的,所以可以在建立tensor的时候就可以给cuda，然后再给variable  
+如果是不用求导的变量，像data,label的variable则不用这样，可以直接把variable放上cuda  
 
-### 16.
 
 
 
