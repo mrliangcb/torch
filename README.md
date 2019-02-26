@@ -88,3 +88,16 @@ pl(a,b)
 ### 13.loss = criterion(outputs, label_variable)  注意输入标签是variable形，output应该还是variable.cuda型，
 这里要注意，label，如果output在cpu上，label_var也要在cpu，或者共同都在cuda上
 
+
+
+### 14.分类网络的输出  
+> 一般是[[0.3,0.6],[0.2,0.7]]二维矩阵，batch是多少，它就有多少行,每行里面有两个概率对应两个类
+
+### 15.求准确率的问题
+> 可以参考[预测最大类别](./预测最大类别.py)
+
+
+
+
+
+
