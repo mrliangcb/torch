@@ -108,7 +108,9 @@ loss = criterion(outputs, Variable(torch.tensor(label)))
 如果是不用求导的变量，像data,label的variable则不用这样，可以直接把variable放上cuda  
 
 
-
+### 17.模型参数的保存和加载
+可以参考[例子1](./保存权重例子.py) , [例子2](./保存读取权重.py)   
+注意读取的时候，要先建立一个规模和之前一样的W或者net  
 
 
 
