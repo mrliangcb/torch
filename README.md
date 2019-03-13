@@ -112,5 +112,25 @@ loss = criterion(outputs, Variable(torch.tensor(label)))
 可以参考[例子1](./保存权重例子.py) , [例子2](./保存读取权重.py)   
 注意读取的时候，要先建立一个规模和之前一样的W或者net  
 
+### 18.torch中尽量避免用for计算矩阵元素   
+尽量用torch.mm  .mul   
+
+### 19.softmax
+'''
+def softmax(x):
+	exps=np.exp(x)
+	return exps/np.sum(exps)
+'''
+
+### 20.做数据最好 把一个数据和一个label捆绑起来[ [pic1,label1],[pic2,label2]]
+
+
+### 21
+
+
+
+
+
+
 
 
