@@ -122,11 +122,14 @@ def softmax(x):
 	return exps/np.sum(exps)
 '''
 
-### 20.做数据最好 把一个数据和一个label捆绑起来[ [pic1,label1],[pic2,label2]]
+### 20.做数据最好 把一个数据和一个label捆绑起来[ [pic1,label1],[pic2,label2]]  
 
 
-### 21
+### 21.做数据队列  
+- 先用一个数据按照excel表型数据的0,1分类的 用户id，然后在用.format()拼一个路径,例如`'*/{}*.1d'.format(id)`，用shuli复制到`'./{}'.format(class)`,class=0或1
+读数据队列的时候直接glob`'./*/*.1d'`，然后抽取他的basename也就是0或1，转为int或float之后作为label(一般是int型，具体看第13点)
 
+### 22.
 
 
 
