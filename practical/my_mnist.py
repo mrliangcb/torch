@@ -1,6 +1,6 @@
 #train
 import my_get_data
-import my_model
+import new.my_model  as my_model
 from torch import nn
 import torch.optim as optim
 import torch 
