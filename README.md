@@ -113,7 +113,7 @@ loss = criterion(outputs, Variable(torch.tensor(label)))
 注意读取的时候，要先建立一个规模和之前一样的W或者net  
 
 ### 18.torch中尽量避免用for计算矩阵元素   
-尽量用torch.mm  .mul   
+尽量用torch.mm (横乘以竖) .mul (对应点相乘)  
 
 ### 19.softmax
 '''
@@ -129,7 +129,11 @@ def softmax(x):
 - 先用一个数据按照excel表型数据的0,1分类的 用户id，然后在用.format()拼一个路径,例如`'*/{}*.1d'.format(id)`，用shuli复制到`'./{}'.format(class)`,class=0或1
 读数据队列的时候直接glob`'./*/*.1d'`，然后抽取他的basename也就是0或1，转为int或float之后作为label(一般是int型，具体看第13点)
 
-### 22.
+### 22.item  
+标量.item)()的到float，标量也就是一位数，不能用矩阵.item()
+print(type(y[0].item())) 
+### 
+
 
 
 
