@@ -76,4 +76,8 @@ print('输出一个属性:',modu.cd)
         # return output#, x
 
 
-
+# print(net.training, net.submodel1.training)
+# net.train() # 将本层及子层的training设定为True
+# net.eval() # 将本层及子层的training设定为False
+# net.training = True # 注意，对module的设置仅仅影响本层，子module不受影响
+# net.training, net.submodel1.training
