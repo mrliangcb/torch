@@ -4,7 +4,6 @@ import numpy as np
 #leaf variable和普通variable
 x = torch.autograd.Variable(torch.Tensor([[1, 2, 3]]),requires_grad=True)  #是叶子变量 leaf variable
 x1 = torch.autograd.Variable(torch.Tensor([[2,1], [5,1], [7,1]]),requires_grad=True)
-print()
 
 y = x + 1  # 非叶子变量  variable
 print('x是否可导:',x.requires_grad)
