@@ -17,6 +17,8 @@ b=torch.nn.Parameter(torch.Tensor(a.size()), requires_grad=True)  #以variable�
 ```py
 conv_object=nn.Conv2d(in_channels=1,out_channels=16,kernel_size=5,stride=1,padding=2) #创建一个对象，含有可导variable
 out_put=conv_object(variable或tensor)    #输入矩阵 输入到卷积层
+conv_object.weight 
+conv_object.bias 
 		
 ```
 
