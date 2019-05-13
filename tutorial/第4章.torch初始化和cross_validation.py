@@ -68,8 +68,16 @@ def weights_init(m):
 		
 net = Net()
 net.apply(weights_init) #递归搜索所有module,如nn.conv2d，nn.parameters,nn.linear
-nn.init.normal_(net.W) #可以单独改变net中nn.Parameters的初始化
-print(net.W)
+nn.init.normal_(net.W) #可以从外部单独改变net中nn.Parameters的初始化
+print('看一下w',net.W)#net就是一个容器，一个字典
+#可以先打印看net有什么模块module，然后net.key去选中模块，注意nn.parameters这里找不到，因为他不是net的module,是net.parameters
+#如果net中有sequence，可以先看net有什么key，然后再读相关模块
+print('网络.parameters1',net.parameters)
+print('网络.parameters2',list(net.parameters()))#能看得到，nn.Parameters在那里面的
+print('net字典',net.state_dict())
+print('net字典的key',net.state_dict().keys())
+
+
 
 # def weights_init(m): #加上这一步初始化更好收敛
 	# if isinstance(m, nn.Conv2d):

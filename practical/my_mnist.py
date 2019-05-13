@@ -81,7 +81,7 @@ for epoch in range(num_epochs):
 		
 		optimizer.zero_grad()
 		outputs = net(inputs)#logit
-		print("标签",labels.data.numpy())
+		# print("标签",labels.data.numpy())
 		loss = criterion(outputs, labels)#输入的是logit，和groundtrue
 
 		loss.backward()
@@ -94,6 +94,8 @@ for epoch in range(num_epochs):
 			train_err = (running_loss / (show_result * minibatchsize))#每个样本的loss
 			print('Epoch %d batch %5d ' % (epoch + 1, i + 1))
 			print('Train loss : %.3f' % train_err)
+			print('看一下权重:',net.conv1)
+			print('看一下权重:',net.conv1[0].weight)
 			running_loss = 0.0
 			if gpu:
 				train_pre= torch.max(outputs,1)[1].cpu().data.numpy()
