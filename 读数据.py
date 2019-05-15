@@ -22,6 +22,8 @@ transform = tfs.Compose(#建立一个方法一
 data_tf = tfs.ToTensor()#建立一个方法二
 
 folder_set = ImageFolder(root=r'C:\Users\mrliangcb\Desktop\笔记整理\pytorch\example_data\image\\', transform=transform)
+
+
 im, label = folder_set[0]
 print('把什么文件夹归为哪个类',folder_set.class_to_idx)#关键字为文件夹名字
 print('所有图片的路径和对应的label',folder_set.imgs)#list里面包着tuple
