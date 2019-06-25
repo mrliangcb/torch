@@ -65,10 +65,19 @@ plt.title(u"初始化的情况")
 plt.close()
 
 def get_loss(y_, y):#计算误差
-    return torch.mean((y_ - y_train) ** 2)#求平方差 平均值
-	
+    return torch.mean((y_ - y_train) ** 2)#求平方差 全部训练样本的平均值
+
 loss = get_loss(y_pred, y_train)
+# w.data=w.data*100 #让variable的初始值改变  这里的改变会影响到后面求导的
 print('损失值：',loss)
+# w[0,0]=1  #inplace操作 直接给variable赋值都是不好的，w=w*0.2 也会有问题，
+#会导致后面w.data错误，求导值也是none，因为w由variable变成了tensor
+
+
+# w.data[0,0]=w.data[0,0]*0.2 #这样就可以的
+print('类型',type(w),type(w.data))#左边应给是variable,右边是tensor
+print('权重',w)
+print('是否可导',w.requires_grad,w.data.requires_grad) #
 
 # 自动求导
 loss.backward()

@@ -9,30 +9,31 @@ def conv3x3(in_channel, out_channel, stride=1):
 
 		
 class CNN2(nn.Module):
-    def __init__(self):
-        super(CNN2, self).__init__()
-        self.conv1 = nn.Sequential(
-                nn.Conv2d(
-                        in_channels=1,
-                        out_channels=16,
-                        kernel_size=5,
-                        stride=1,
-                        padding=2
-                        ),
-                nn.ReLU(),
-                nn.MaxPool2d(kernel_size=2))
-        self.conv2 = nn.Sequential(
-                nn.Conv2d(16, 32, 5, 1, 2), 
-                nn.ReLU(), 
-                nn.MaxPool2d(2))
-        self.out = nn.Linear(32*7*7, 10)
-    
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = x.view(x.size(0), -1)
-        output = self.out(x)#logit输出，如果loss函数为mse，则还要进行softmax
-        return output#, x
+	def __init__(self):
+		super(CNN2, self).__init__()
+		self.conv1 = nn.Sequential(
+				nn.Conv2d(
+						in_channels=1,
+						out_channels=16,
+						kernel_size=5,
+						stride=1,
+						padding=2
+						),
+				nn.ReLU(),
+				nn.MaxPool2d(kernel_size=2))
+		self.conv2 = nn.Sequential(
+				nn.Conv2d(16, 32, 5, 1, 2), 
+				nn.ReLU(), 
+				nn.MaxPool2d(2))
+		self.out = nn.Linear(32*7*7, 10)
+
+	def forward(self, x):
+		x = self.conv1(x)
+		x = self.conv2(x)
+		x = x.view(x.size(0), -1)
+		output = self.out(x)#logit输出，如果loss函数为mse，则还要进行softmax
+		output = F.softmax(output, dim=1)
+		return output#, x
 		
 
 		

@@ -15,7 +15,7 @@ b=torch.nn.Parameter(torch.Tensor(a.size()), requires_grad=True)  #以variable�
 
 (2)nn.Conv2d  
 ```py
-conv_object=nn.Conv2d(in_channels=1,out_channels=16,kernel_size=5,stride=1,padding=2) #创建一个对象，含有可导variable
+conv_object=nn.Conv2d(in_channels=1,out_channels=16,kernel_size=(5,5),stride=1,padding=2) #创建一个对象，含有可导variable
 out_put=conv_object(variable或tensor)    #输入矩阵 输入到卷积层
 conv_object.weight 
 conv_object.bias 
@@ -49,6 +49,22 @@ module=net(输入a参数)  #实例化模型ob
 out=module(input)  #input直接传入forward中
 ```
 
+(5)代价函数
+criterion = nn.NLLLoss()
+loss = criterion(outputs[0], Variable(torch.tensor(label).long()).cuda(0))
+
+nn.CrossEntropyLoss() #交叉熵    nn.logSoftmax()和nn.NLLLoss()的整合
+#整合如下
+m = nn.LogSoftmax()
+loss = nn.NLLLoss()
+input=m(input)
+output = loss(input, target)
+
+nn.BCELoss()
+torch.nn.MSELoss
+torch.nn.L1Loss
+torch.nn.PoissonNLLLoss
+
 
 属性:  
 ```py
@@ -57,13 +73,14 @@ ob._parameters  #类里面建立的一些 nn.Parameter 会显示到这里,(类�
 ob._modules     #可以看到nn.conv  nn.linear等层
 
 ```
-(5)F.softmax(x, dim=1) #代价函数用交叉熵的时候，不能用这个作为模型输出
+(6)F.softmax(x, dim=1) #代价函数用交叉熵的时候，不能用这个作为模型输出
 
+(7)BN
+m = nn.BatchNorm2d(2,affine=True)
+nn.BatchNorm2d(32)
 
-
-
-
-
+(8)激活函数用法
+nn.ReLU(X)
 
 
 

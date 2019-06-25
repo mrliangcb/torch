@@ -76,6 +76,7 @@ print('网络.parameters1',net.parameters)
 print('网络.parameters2',list(net.parameters()))#能看得到，nn.Parameters在那里面的
 print('net字典',net.state_dict())
 print('net字典的key',net.state_dict().keys())
+# print(torch.numel(x))#查看tensor的参数个数
 
 
 
@@ -87,9 +88,8 @@ print('net字典的key',net.state_dict().keys())
 	# elif isinstance(m, nn.Linear):
 		# nn.init.xavier_uniform_(m.weight)
 		# nn.init.constant_(m.bias, 0)
-
-
-
+		
+		
 
 
 
