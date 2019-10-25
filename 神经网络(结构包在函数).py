@@ -66,7 +66,7 @@ for e in range(100):
         print('epoch: {}, loss: {}'.format(e+1, loss.data[0]))
 
 def plot_logistic(x):
-	x = 0Variable(torch.from_numpy(x).float())
+	x = Variable(torch.from_numpy(x).float())
 	out = torch.sigmoid(logistic_regression(x))
 	out = (out > .5) * 1
 	print('模型输出',out) #rensor，1,0

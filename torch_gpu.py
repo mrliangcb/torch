@@ -4,6 +4,8 @@
 # print('电脑设备:',device)
 #查看
 
+print(torch.cuda.is_available())
+
 ###分成两步：网络放在gpu上，数据放在gpu上
 
 

@@ -3,6 +3,10 @@ import torch
 import numpy as np
 from torch.autograd import Variable
 
+
+
+
+
 torch.manual_seed(2017)
 # 读入数据 x 和 y
 x_train = np.array([[3.3], [4.4], [5.5], [6.71], [6.93], [4.168],
@@ -31,11 +35,11 @@ print('w:',w.shape)#1
 x_train = Variable(x_train)#把样本转化为变量，常数,grad=false,variable才能和bariable计算
 y_train = Variable(y_train)
 
-def linear_model(x):
+def linear_model(x): #
     return x * w + b
 
-y_ = linear_model(x_train)#模型输出
-#模型样子,传入numpy型
+y_ = linear_model(x_train)
+
 plt.plot(x_train.data.numpy(), y_train.data.numpy(), 'bo', label='real')
 plt.plot(x_train.data.numpy(), y_.data.numpy(), 'ro', label='estimated')
 plt.legend()
@@ -43,6 +47,7 @@ plt.show()
 
 def get_loss(y_, y):#计算误差
     return torch.mean((y_ - y_train) ** 2)#求平方差 平均值
+	
 loss = get_loss(y_, y_train)
 #用到自动求导
 loss.backward()
@@ -51,8 +56,21 @@ loss.backward()
 print('w梯度:',w.grad)
 print('b梯度',b.grad)
 #第一次更新数据
+epsilon = 1e-5
+def check_gradient(f, w,x0,y, epsilon):  #
+    return (f(w+epsilon,x0,y) - f(w-epsilon,x0,y))/2/epsilon
+	
+def all(w,x,y):
+	y_= x * w + b
+	return get_loss(y_,y)
+	
+print('梯度检查:',check_gradient(all,w,x_train ,y_train, epsilon))
+
 w.data = w.data - 1e-2 * w.grad.data#学习率乘以梯度,如果梯度正的，就是梯度上升，那自变量就是减小
 b.data = b.data - 1e-2 * b.grad.data
+
+
+
 
 y_ = linear_model(x_train)
 plt.plot(x_train.data.numpy(), y_train.data.numpy(), 'bo', label='real')

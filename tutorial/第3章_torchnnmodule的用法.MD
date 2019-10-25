@@ -10,12 +10,12 @@ import torch.nn as nn
 ```py
 a=Variable(torch.Tensor([3]), requires_grad=True) 
 b=torch.nn.Parameter(torch.Tensor(a.size()), requires_grad=True)  #以variable为基类的,是variable的子类，区别是这个可以绑定到net.parameters中   
-
+#可以新建一个module来装nn.para，然后将这个module放到sequence里面
 ```
 
 (2)nn.Conv2d  
 ```py
-conv_object=nn.Conv2d(in_channels=1,out_channels=16,kernel_size=(5,5),stride=1,padding=2) #创建一个对象，含有可导variable
+conv_object=nn.Conv2d(in_channels=1,out_channels=16,kernel_size=(5,5),stride=1,padding=2) #创建一个对象，含有可导variable  可以padding=(1,1)
 out_put=conv_object(variable或tensor)    #输入矩阵 输入到卷积层
 conv_object.weight 
 conv_object.bias 
@@ -29,7 +29,7 @@ output=fc(input_var或tensor)
 ```
 (4)nn.Sequential  
 ```py
-#可以把多个层串联起来
+#可以把多个module联起来
 self.conv1 = nn.Sequential(nn.Conv2d(),nn.ReLU(),nn.MaxPool2d(kernel_size=2))  #实例化
 output=self.conv1(input) #把数据输入到集成层conv1  
 ```
@@ -53,8 +53,11 @@ out=module(input)  #input直接传入forward中
 criterion = nn.NLLLoss()
 loss = criterion(outputs[0], Variable(torch.tensor(label).long()).cuda(0))
 
-nn.CrossEntropyLoss() #交叉熵    nn.logSoftmax()和nn.NLLLoss()的整合
-#整合如下
+nn.CrossEntropyLoss() #交叉熵    nn.logSoftmax()和nn.NLLLoss()的整合  # 等价的
+
+loss_func = torch.nn.MSELoss() # mse
+
+#整合如下  与交叉熵等价
 m = nn.LogSoftmax()
 loss = nn.NLLLoss()
 input=m(input)

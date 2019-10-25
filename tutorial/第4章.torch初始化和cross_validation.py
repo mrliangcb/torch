@@ -3,15 +3,28 @@ import torch.nn as nn
 import math
 import torch
 
+# 高级类  nn.module   像net  conv pool这些 都是继承了module
+# 低级类  nn.Parameter 没有module属性的
+class mymodule(nn.Module):
+	def __init__(self):
+		super(mymodule,self).__init__()
+		self.weight=nn.Parameter((torch.rand(90,90)), requires_grad=True)
+	def forward(self,x):
+		return x
 
-class Net(nn.Module):
+
+class Net(nn.Module):  #一个模块(字典)，下面包含了子模块conv2d(变量名为key)
 	def __init__(self):
 		super(Net, self).__init__()
 		self.convE1 = nn.Conv2d(1, 16, (1,300)) #自己默认 weight.data.uniform  bias.data.uniform
 		nn.init.normal_(self.convE1.weight, std=math.sqrt(2/(300*1+300*16))) #单独给一层初始化参数 ，给定方差，
 		#后面再有一次weight_init初始化，输入和输出的方差相同，所以也相当于用到这里方差，只是二次初始化有利于收敛
 		
-		self.W=nn.Parameter((torch.rand(90,90)), requires_grad=True)
+		self.conv2=mymodule() #于是Net 就有了两个子module  convE1  myumodule
+		
+		self.W=nn.Parameter((torch.rand(90,90)), requires_grad=True)# W不是一个module，只是一个tensor容器，跟convE1.weight和convE1.bias是同级的
+		print('卷积层weight和bias一起:',self.convE1)
+		
 		print('卷积层weight',self.convE1.weight)
 		print('卷积层bias',self.convE1.bias)
 		print('初始化前',self.W)
@@ -50,13 +63,17 @@ class Net(nn.Module):
 
 # 对整个网络进行参数初始化  通过前缀找module
 # def weights_init(m):
-	# classname=m.__class__.__name__
+	# classname=m.__class__.__name__  #获取子模块的名字
 	# if classname.find('conv') != -1: #网络中定义了self.conv这个变量，这里就找变量前缀为conv的
 		# nn.init.xavier_uniform_(m.weight.data)
 		# nn.init.xavier_uniform_(m.bias.data)
 		
 #上面是通过前缀找module，这里是根据module的类别来找
 def weights_init(m):
+	print('进来的是什么:',m)
+	if 'weight' in dir(m):
+		print('含有weight')  #这个是能判断  mymodule对象.weight存在的
+	
 	if isinstance(m, nn.Conv2d):
 		print('找到conv2d')
 		print('初始化前的conv2d权重',m.weight)
@@ -67,17 +84,25 @@ def weights_init(m):
 		print('找到parameter')
 		
 net = Net()
-net.apply(weights_init) #递归搜索所有module,如nn.conv2d，nn.parameters,nn.linear
-nn.init.normal_(net.W) #可以从外部单独改变net中nn.Parameters的初始化
-print('看一下w',net.W)#net就是一个容器，一个字典
+print('有哪些模块:',net)#可以net.convE1  输入模块显示括号里面的
+print('类型',type(net))
+net.apply(weights_init) #递归搜索所有module,如nn.conv2d，,nn.linear   这个模块找不到nn.Parameter。
+# 只会输入模块，不输入tensor或者容器，所以nn.Parameter可以封装到一个小module类，然后再写进来会好一些
+
+print('外部初始化前的nn.Parameter非模块:',net.W)
+nn.init.normal_(net.W) #可以从外部单独改变net中nn.Parameters的初始化  
+#init.normal 只能放入容器,tensor类型，不能放入module    w是容器，convE1是module，底下的weight和bias是两个容器
+
+print('外部初始化后nn.Parameter非模块:',net.W)  # 这里nn.Parameter被初始化了   #net就是一个容器，一个字典
+
+
 #可以先打印看net有什么模块module，然后net.key去选中模块，注意nn.parameters这里找不到，因为他不是net的module,是net.parameters
 #如果net中有sequence，可以先看net有什么key，然后再读相关模块
 print('网络.parameters1',net.parameters)
 print('网络.parameters2',list(net.parameters()))#能看得到，nn.Parameters在那里面的
 print('net字典',net.state_dict())
-print('net字典的key',net.state_dict().keys())
+print('net字典的key',net.state_dict().keys())#参数的字典  有nn.Para
 # print(torch.numel(x))#查看tensor的参数个数
-
 
 
 # def weights_init(m): #加上这一步初始化更好收敛
@@ -89,8 +114,14 @@ print('net字典的key',net.state_dict().keys())
 		# nn.init.xavier_uniform_(m.weight)
 		# nn.init.constant_(m.bias, 0)
 		
-		
+for sub_module in net.children():
+	print('子模块',sub_module)
+	
 
+
+
+for name, Parameter in net.named_parameters():#这里是读容器，不是读模块 全部都有  每个装着参数的都是容器  W就是一个普通容器，conv那些是模块，也是容器
+    print('查看named_parameters:',name, '参数是',Parameter) #
 
 
 
