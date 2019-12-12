@@ -1,7 +1,7 @@
 # 保存模型示例代码
 #在sharedeep的mnist做了实验
 print('===> Saving models...')
-state = {
+state = { 
     'state': model.state_dict(),
     'epoch': epoch                   # 将epoch一并保存
 }
@@ -28,4 +28,11 @@ else:
 	#https://www.cnblogs.com/qinduanyinghua/p/9311410.html
 #字典
 
-
+#实际中
+#保存
+state = {'net':net.state_dict(), 'optimizer':optimizer.state_dict(),'iteration':ite}
+ckpt_path=r'./save_w/net_params_best_loss_{}fold.pkl'.format(fold)
+torch.save(state,ckpt_path)
+					
+#读入
+#建立module，然后load_state_dict

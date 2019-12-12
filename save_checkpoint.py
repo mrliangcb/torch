@@ -14,3 +14,5 @@ for i in range(epoch):
 	path_checkpoint=r'./{}_{}.clk'.format(epoch,i)
 	torch.save(state,path)
 			
+
+

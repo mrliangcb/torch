@@ -53,8 +53,11 @@ class CNN2(nn.Module):#nn.module是一个基类
 		# x== self.conv1(x)
 		x = self.squarr(x)#
 		return x #squarr，输入进来的是int，返回就是int 
-print(CNN2.parameters)
+print('cnn2的parameters',CNN2.parameters)
 modu=CNN2()
+print('modu的parameters',modu.parameters())
+for i in modu.parameters():
+	print(i)
 
 # a=modu(2)
 
@@ -63,9 +66,9 @@ a=modu(c)
 print(a)
 a.backward()
 print('求导结果:',c.grad)
-print(modu._parameters)#只包含了w1  nn.parameter建立的
+print('下划线para',modu._parameters)#只包含了w1  nn.parameter建立的
 # a.backward()
-print(modu._modules)#nn.conv   nn.liner 包含在这里
+print('下划线module',modu._modules)#nn.conv   nn.liner 包含在这里
 print('输出整个模型',modu)
 print('输出一个属性:',modu.cd)
     # def forward(self, x):
